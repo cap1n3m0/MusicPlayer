@@ -3,7 +3,6 @@ import 'package:flutter_application_1/SharedPrefs.dart';
 import 'package:flutter_application_1/accounts.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'home.dart';
-import 'test.dart';
 import 'SignIn.dart';
 
 class SignUp extends StatefulWidget {
