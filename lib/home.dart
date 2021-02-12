@@ -572,7 +572,7 @@ class Home extends State<HomePage> {
         floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
         floatingActionButton: show_floating_button
             ? FloatingActionButton(
-                backgroundColor: Color.fromRGBO(107, 255, 171, 60),
+                backgroundColor: Colors.red,
                 child: Icon(Icons.shuffle),
                 onPressed: () {
                   if (page == AppPage.home) {

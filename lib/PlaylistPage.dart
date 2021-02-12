@@ -117,7 +117,7 @@ class playlistPage extends State<PlaylistPage> {
 
     return Scaffold(
         floatingActionButton: FloatingActionButton(
-          backgroundColor: Colors.orangeAccent,
+          backgroundColor: Colors.red,
           child: Icon(Icons.add),
           onPressed: () {
             setState(() {
