@@ -79,6 +79,16 @@ class addSong extends State<AddSong> {
           onPressed: () {
             setState(() {
               CURRENT_ACCOUNT.mySongs.add(song);
+              for (int i = 0; i < searchSongs.length; i++) {
+                for (int j = 0; j < searchSongs.length; j++) {
+                  if (j != i) {
+                    if (searchSongs[i].title == searchSongs[j].title) {
+                      searchSongs.removeAt(j);
+                    }
+                  }
+                }
+              }
+              searchSongs = searchSongs.toSet().toList();
             });
           },
         ),
@@ -158,7 +168,7 @@ class addSong extends State<AddSong> {
     return Card(
       child: ListTile(
         leading: IconButton(
-          color: Colors.red,
+          color: Colors.green,
           icon: Icon(searchSongs[index].play == null
               ? MdiIcons.play
               : searchSongs[index].play == true
