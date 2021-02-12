@@ -58,6 +58,7 @@ class myApp extends State<MyApp> {
 
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'Oswald'),
       title: "Music Player",
       home: HomePage(),
