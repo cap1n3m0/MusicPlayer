@@ -69,16 +69,17 @@ class accountPage extends State<AccountPage> {
           elevation: 80,
           items: <BubbleBottomBarItem>[
             BubbleBottomBarItem(
-                backgroundColor: Color.fromRGBO(255, 151, 33, 90),
+                backgroundColor: Colors.orange[800],
                 icon: Icon(
                   MdiIcons.musicNoteEighth,
                   color: Colors.black,
                 ),
-                activeIcon: Icon(
-                  MdiIcons.musicNoteEighth,
-                  color: Color.fromRGBO(255, 151, 33, 90),
-                ),
-                title: Text("My Songs")),
+                activeIcon:
+                    Icon(MdiIcons.musicNoteEighth, color: Colors.orange[800]),
+                title: Text(
+                  "My Songs",
+                  //style: TextStyle(color: Colors.deepOrange),
+                )),
             BubbleBottomBarItem(
                 backgroundColor: Colors.red,
                 icon: Icon(
@@ -86,10 +87,10 @@ class accountPage extends State<AccountPage> {
                   color: Colors.black,
                 ),
                 activeIcon: Icon(
-                  MdiIcons.account,
+                  Icons.add,
                   color: Colors.red,
                 ),
-                title: Text("My Account")),
+                title: Text("Add songs")),
             BubbleBottomBarItem(
                 backgroundColor: Colors.deepPurple,
                 icon: Icon(
@@ -102,25 +103,25 @@ class accountPage extends State<AccountPage> {
                 ),
                 title: Text("My Playlists")),
             BubbleBottomBarItem(
-                backgroundColor: Colors.blue,
+                backgroundColor: Color.fromRGBO(29, 81, 252, 1),
                 icon: Icon(
                   Icons.favorite,
                   color: Colors.black,
                 ),
                 activeIcon: Icon(
                   Icons.favorite,
-                  color: Colors.blue,
+                  color: Colors.yellowAccent,
                 ),
                 title: Text("My Saved")),
             BubbleBottomBarItem(
-                backgroundColor: Color.fromRGBO(250, 255, 94, 90),
+                backgroundColor: Colors.lightGreenAccent,
                 icon: Icon(
                   MdiIcons.account,
                   color: Colors.black,
                 ),
                 activeIcon: Icon(
                   MdiIcons.account,
-                  color: Color.fromRGBO(250, 255, 94, 90),
+                  color: Colors.lightGreenAccent,
                 ),
                 title: Text("My Account"))
           ],

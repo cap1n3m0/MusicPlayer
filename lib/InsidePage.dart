@@ -144,7 +144,7 @@ class insidePlaylist extends State<InsidePlaylist> {
     var PLAYLIST = playlists[index];
     return Scaffold(
         bottomNavigationBar: BubbleBottomBar(
-          backgroundColor: Colors.yellow[200],
+          backgroundColor: Color.fromARGB(255, 161, 203, 248),
           hasNotch: true,
           fabLocation: BubbleBottomBarFabLocation.end,
           opacity: .2,
@@ -155,16 +155,17 @@ class insidePlaylist extends State<InsidePlaylist> {
           elevation: 80,
           items: <BubbleBottomBarItem>[
             BubbleBottomBarItem(
-                backgroundColor: Colors.blueGrey,
+                backgroundColor: Colors.orange[800],
                 icon: Icon(
                   MdiIcons.musicNoteEighth,
                   color: Colors.black,
                 ),
-                activeIcon: Icon(
-                  MdiIcons.musicNoteEighth,
-                  color: Colors.blueGrey,
-                ),
-                title: Text("My Songs")),
+                activeIcon:
+                    Icon(MdiIcons.musicNoteEighth, color: Colors.orange[800]),
+                title: Text(
+                  "My Songs",
+                  //style: TextStyle(color: Colors.deepOrange),
+                )),
             BubbleBottomBarItem(
                 backgroundColor: Colors.red,
                 icon: Icon(
@@ -188,14 +189,14 @@ class insidePlaylist extends State<InsidePlaylist> {
                 ),
                 title: Text("My Playlists")),
             BubbleBottomBarItem(
-                backgroundColor: Colors.blue,
+                backgroundColor: Color.fromRGBO(29, 81, 252, 1),
                 icon: Icon(
                   Icons.favorite,
                   color: Colors.black,
                 ),
                 activeIcon: Icon(
                   Icons.favorite,
-                  color: Colors.blue,
+                  color: Colors.yellowAccent,
                 ),
                 title: Text("My Saved")),
             BubbleBottomBarItem(

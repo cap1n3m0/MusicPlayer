@@ -92,16 +92,17 @@ class _favouriteSongs extends State<favouriteSongs> {
         elevation: 80,
         items: <BubbleBottomBarItem>[
           BubbleBottomBarItem(
-              backgroundColor: Colors.blueGrey,
+              backgroundColor: Colors.orange[800],
               icon: Icon(
                 MdiIcons.musicNoteEighth,
                 color: Colors.black,
               ),
-              activeIcon: Icon(
-                MdiIcons.musicNoteEighth,
-                color: Colors.blueGrey,
-              ),
-              title: Text("My Songs")),
+              activeIcon:
+                  Icon(MdiIcons.musicNoteEighth, color: Colors.orange[800]),
+              title: Text(
+                "My Songs",
+                //style: TextStyle(color: Colors.deepOrange),
+              )),
           BubbleBottomBarItem(
               backgroundColor: Colors.red,
               icon: Icon(
@@ -125,14 +126,14 @@ class _favouriteSongs extends State<favouriteSongs> {
               ),
               title: Text("My Playlists")),
           BubbleBottomBarItem(
-              backgroundColor: Colors.blue,
+              backgroundColor: Colors.yellow,
               icon: Icon(
                 Icons.favorite,
                 color: Colors.black,
               ),
               activeIcon: Icon(
                 Icons.favorite,
-                color: Colors.blue,
+                color: Colors.yellow,
               ),
               title: Text("My Saved")),
           BubbleBottomBarItem(
@@ -143,7 +144,7 @@ class _favouriteSongs extends State<favouriteSongs> {
               ),
               activeIcon: Icon(
                 MdiIcons.account,
-                color: Colors.green,
+                color: Colors.greenAccent,
               ),
               title: Text("My Account"))
         ],

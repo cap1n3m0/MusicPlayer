@@ -29,11 +29,12 @@ class SongDetails extends StatefulWidget {
 class songDetails extends State<SongDetails> {
   Duration _position = new Duration();
   Duration _duration = new Duration();
+  double volume = 10.0;
   Duration pos;
   bool isDisposed = false;
   final index;
   final play;
-  final player;
+  AudioPlayer player;
   final cache;
   songDetails({this.play, this.index, this.player, this.cache});
 
@@ -57,22 +58,12 @@ class songDetails extends State<SongDetails> {
     await player.setReleaseMode(release);
   }
 
-  void release() async {
-    await player.release();
+  void dispose() {
+    player.dispose();
+    super.dispose();
   }
 
-  void dispose() async {
-    if (!isDisposed) {
-      await player.release();
-      isDisposed = true;
-    }
-  }
-
-  void initState() {
-    super.initState();
-    releaseMode(ReleaseMode.RELEASE); // default release
-    pos = new Duration();
-    isDisposed = false;
+  void getDurationAndPosition() {
     player.durationHandler = (_d) => setState(() {
           _duration = _d;
         });
@@ -81,10 +72,20 @@ class songDetails extends State<SongDetails> {
         });
   }
 
+  void initState() {
+    super.initState();
+    player = new AudioPlayer();
+    releaseMode(ReleaseMode.RELEASE); // default release
+    pos = new Duration();
+    isDisposed = false;
+    getDurationAndPosition();
+  }
+
   @override
   Widget build(BuildContext context) {
     void onTap(index) {
       setState(() {
+        // release(); // remove
         bottom_index = index;
         if (bottom_index == 0) {
           Navigator.push(
@@ -108,21 +109,26 @@ class songDetails extends State<SongDetails> {
               context, MaterialPageRoute(builder: (context) => AccountPage()));
         }
       });
+      dispose();
     }
 
     player.onDurationChanged.listen((Duration _dur) {
-      setState(() {
-        current_song.duration = _dur;
-      });
-      player.onAudioPositionChanged.listen((Duration _pos) {
+      if (this.mounted) {
         setState(() {
-          _position = _pos;
+          current_song.duration = _dur;
         });
+      }
+      player.onAudioPositionChanged.listen((Duration _pos) {
+        if (this.mounted) {
+          setState(() {
+            _position = _pos;
+          });
+        }
       });
     });
     return Scaffold(
       bottomNavigationBar: BubbleBottomBar(
-        backgroundColor: Colors.yellow[200],
+        backgroundColor: Color.fromARGB(255, 161, 203, 248),
         hasNotch: true,
         fabLocation: BubbleBottomBarFabLocation.end,
         opacity: .2,
@@ -133,16 +139,17 @@ class songDetails extends State<SongDetails> {
         elevation: 80,
         items: <BubbleBottomBarItem>[
           BubbleBottomBarItem(
-              backgroundColor: Colors.blueGrey,
+              backgroundColor: Colors.orange[800],
               icon: Icon(
                 MdiIcons.musicNoteEighth,
                 color: Colors.black,
               ),
-              activeIcon: Icon(
-                MdiIcons.musicNoteEighth,
-                color: Colors.blueGrey,
-              ),
-              title: Text("My Songs")),
+              activeIcon:
+                  Icon(MdiIcons.musicNoteEighth, color: Colors.orange[800]),
+              title: Text(
+                "My Songs",
+                //style: TextStyle(color: Colors.deepOrange),
+              )),
           BubbleBottomBarItem(
               backgroundColor: Colors.red,
               icon: Icon(
@@ -150,10 +157,10 @@ class songDetails extends State<SongDetails> {
                 color: Colors.black,
               ),
               activeIcon: Icon(
-                MdiIcons.account,
+                Icons.add,
                 color: Colors.red,
               ),
-              title: Text("My Account")),
+              title: Text("Add songs")),
           BubbleBottomBarItem(
               backgroundColor: Colors.deepPurple,
               icon: Icon(
@@ -166,14 +173,14 @@ class songDetails extends State<SongDetails> {
               ),
               title: Text("My Playlists")),
           BubbleBottomBarItem(
-              backgroundColor: Colors.blue,
+              backgroundColor: Color.fromRGBO(29, 81, 252, 1),
               icon: Icon(
                 Icons.favorite,
                 color: Colors.black,
               ),
               activeIcon: Icon(
                 Icons.favorite,
-                color: Colors.blue,
+                color: Colors.yellowAccent,
               ),
               title: Text("My Saved")),
           BubbleBottomBarItem(
@@ -195,15 +202,19 @@ class songDetails extends State<SongDetails> {
               child: IconButton(
                   icon: Icon(MdiIcons.arrowLeft),
                   onPressed: () {
-                    setState(() {
-                      CURRENT_ACCOUNT.mySongs[index].play = false;
-                      _position = new Duration(seconds: 0);
-                      player.stop();
-                      release();
-                      dispose();
-                      Home().isDisposed = true; // change to false
-                      Navigator.pop(context);
-                    });
+                    if (this.mounted) {
+                      setState(() {
+                        CURRENT_ACCOUNT.mySongs[index].play = false;
+                        player.stop();
+                        Navigator.pop(context);
+                      });
+                      _position = new Duration();
+                      _duration = new Duration();
+                      if (this.mounted) {
+                        getDurationAndPosition();
+                      }
+                    }
+                    dispose();
                   }))),
       body: Column(children: [
         SliderTheme(
@@ -271,40 +282,43 @@ class songDetails extends State<SongDetails> {
                     : Icon(MdiIcons.play),
                 iconSize: 70,
                 onPressed: () {
-                  setState(() {
-                    CURRENT_ACCOUNT.mySongs[index].play =
-                        !CURRENT_ACCOUNT.mySongs[index].play;
-                    for (int i = 0; i < CURRENT_ACCOUNT.mySongs.length; i++) {
-                      if (CURRENT_ACCOUNT.mySongs[i].title ==
-                          current_song.title) {
-                        CURRENT_ACCOUNT.mySongs[i].play = current_song.play;
-                        break;
-                      }
-                    }
-                    if (CURRENT_ACCOUNT.mySongs[index].play) {
-                      song_is_playing = true;
-                      try {
-                        print("Pos: ${pos.inSeconds}");
-                        if (pos.inSeconds != null) {
-                          if (pos.inSeconds < 1.0) {
-                            playSong();
-                          } else {
-                            resume();
-                          }
+                  if (this.mounted) {
+                    setState(() {
+                      print("Duration of song: ${_duration}");
+                      CURRENT_ACCOUNT.mySongs[index].play =
+                          !CURRENT_ACCOUNT.mySongs[index].play;
+                      for (int i = 0; i < CURRENT_ACCOUNT.mySongs.length; i++) {
+                        if (CURRENT_ACCOUNT.mySongs[i].title ==
+                            current_song.title) {
+                          CURRENT_ACCOUNT.mySongs[i].play = current_song.play;
+                          break;
                         }
-                      } catch (e) {
-                        print("FATAL ERROR: $e");
                       }
-                    } else {
-                      try {
-                        pos = _position;
-                        song_is_playing = false;
-                        player.pause();
-                      } catch (e) {
-                        print("FATAL ERROR: $e");
+                      if (CURRENT_ACCOUNT.mySongs[index].play) {
+                        song_is_playing = true;
+                        try {
+                          print("Pos: ${pos.inSeconds}");
+                          if (pos.inSeconds != null) {
+                            if (pos.inSeconds < 1.0) {
+                              playSong();
+                            } else {
+                              resume();
+                            }
+                          }
+                        } catch (e) {
+                          print("FATAL ERROR: $e");
+                        }
+                      } else {
+                        try {
+                          pos = _position;
+                          song_is_playing = false;
+                          player.pause();
+                        } catch (e) {
+                          print("FATAL ERROR: $e");
+                        }
                       }
-                    }
-                  });
+                    });
+                  }
                 }),
             SizedBox(width: 30),
             IconButton(
@@ -337,12 +351,13 @@ class songDetails extends State<SongDetails> {
             ),
           ),
           child: Slider(
-              min: 0,
-              max: 100,
+              min: 0.0,
+              max: 30.0,
               value: volume,
               label: volume.toString(),
               onChanged: (value) {
                 setState(() {
+                  print("Set volume to: $volume");
                   volume = value;
                   player.setVolume(volume);
                 });
