@@ -194,6 +194,15 @@ class addSong extends State<AddSong> {
                 searchSongs[index].play = true;
                 player.play(searchSongs[index].file);
               }
+              for (int i = 0; i < searchSongs.length; i++) {
+                for (int j = 0; j < searchSongs.length; j++) {
+                  if (i != j) {
+                    if (searchSongs[i] == searchSongs[j]) {
+                      searchSongs.removeAt(j);
+                    }
+                  }
+                }
+              }
             });
             // play preview
           },
