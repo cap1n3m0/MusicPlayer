@@ -6,6 +6,7 @@ import 'home.dart';
 import 'files.dart';
 
 String userAndPassFileName = "usersAndPass.txt";
+String test; 
 
 enum Fav { f, n }
 enum AppPage { home, account, playlist, favs, add }
