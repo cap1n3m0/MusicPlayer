@@ -38,7 +38,6 @@ Map<String, String> NameLink = {};
 Map<String, String> NameArtist = {};
 Map<String, String> NameImage = {};
 
-// ignore: camel_case_types
 class myApp extends State<MyApp> {
   @override
   void initState() {
